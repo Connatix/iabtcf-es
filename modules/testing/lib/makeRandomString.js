@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.makeRandomString=void 0;var makeRandomInt_1=require("./makeRandomInt");function makeRandomString(e,n,a){void 0===n&&(n=0),void 0===a&&(a=127);for(var o="",r=0;r<e;r++)o+=String.fromCharCode(makeRandomInt_1.makeRandomInt(n,a));return o}exports.makeRandomString=makeRandomString;

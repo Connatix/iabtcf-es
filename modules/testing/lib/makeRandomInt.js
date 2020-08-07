@@ -1,0 +1,1 @@
+"use strict";function makeRandomInt(e,t){return Math.round(Math.random()*(t-e))+e}Object.defineProperty(exports,"__esModule",{value:!0}),exports.makeRandomInt=void 0,exports.makeRandomInt=makeRandomInt;
