@@ -1,18 +1,9 @@
-import { EncodingOptions } from './encoder';
 import { TCModel } from './TCModel';
 /**
  * Main class for encoding and decoding a
  * TCF Transparency and Consent String
  */
 export declare class TCString {
-    /**
-     * encodes a model into a TCString
-     *
-     * @param {TCModel} tcModel - model to convert into encoded string
-     * @param {EncodingOptions} options - for encoding options other than default
-     * @return {string} - base64url encoded Transparency and Consent String
-     */
-    static encode(tcModel: TCModel, options?: EncodingOptions): string;
     /**
      * Decodes a string into a TCModel
      *
@@ -23,5 +14,5 @@ export declare class TCString {
      * none is passed a new instance of TCModel will be created.
      * @return {TCModel} - Returns populated TCModel
      */
-    static decode(encodedTCString: string, tcModel?: TCModel): TCModel;
+    static decode(encodedTCString: string): TCModel;
 }
