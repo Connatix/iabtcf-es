@@ -19,3 +19,8 @@ tags.*
 *.swp
 *.swo
 *.log
+
+modules/core/lib/Cloneable.*
+modules/core/lib/GVL.*
+modules/core/lib/Json.*
+modules/core/lib/TCModel.*
