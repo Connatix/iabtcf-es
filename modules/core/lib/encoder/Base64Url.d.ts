@@ -11,14 +11,6 @@ export declare class Base64Url {
     private static BASIS;
     private static LCM;
     /**
-     * encodes an arbitrary-length bitfield string into base64url
-     *
-     * @static
-     * @param {string} str - arbitrary-length bitfield string to be encoded to base64url
-     * @return {string} - base64url encoded result
-     */
-    static encode(str: string): string;
-    /**
      * decodes a base64url encoded bitfield string
      *
      * @static
