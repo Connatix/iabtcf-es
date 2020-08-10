@@ -1,4 +1,4 @@
-import {DecodingError, EncodingError} from '../errors';
+import { DecodingError, EncodingError } from '../errors';
 
 export class Base64Url {
 
@@ -28,43 +28,6 @@ export class Base64Url {
   private static LCM = 24;
 
   /**
-   * encodes an arbitrary-length bitfield string into base64url
-   *
-   * @static
-   * @param {string} str - arbitrary-length bitfield string to be encoded to base64url
-   * @return {string} - base64url encoded result
-   */
-  public static encode(str: string): string {
-
-    /**
-     * should only be 0 or 1
-     */
-    if (!/^[0-1]+$/.test(str)) {
-
-      throw new EncodingError('Invalid bitField');
-
-    }
-
-    /**
-     * Pad the end of the string to the least common mutliple of 6 (basis for
-     * base64) and 8 (one byte)
-     */
-    const padding = str.length % this.LCM;
-    str += padding ? '0'.repeat(this.LCM - padding) : '';
-
-    let result = '';
-
-    for (let i = 0; i < str.length; i += this.BASIS) {
-
-      result += this.DICT[parseInt(str.substr(i, this.BASIS), 2)];
-
-    }
-
-    return result;
-
-  }
-
-  /**
    * decodes a base64url encoded bitfield string
    *
    * @static
@@ -84,7 +47,7 @@ export class Base64Url {
 
     let result = '';
 
-    for (let i = 0; i < str.length; i ++) {
+    for (let i = 0; i < str.length; i++) {
 
       /**
        * index the binary value of the character from out reverse map

@@ -1,22 +1,8 @@
-import {BooleanEncoder} from './BooleanEncoder';
-import {DecodingError} from '../../errors';
-import {Vector} from '../../model';
+import { BooleanEncoder } from './BooleanEncoder';
+import { DecodingError } from '../../errors';
+import { Vector } from '../../model';
 
 export class FixedVectorEncoder {
-
-  public static encode(value: Vector, numBits: number): string {
-
-    let bitString = '';
-
-    for (let i = 1; i <= numBits; i++) {
-
-      bitString += BooleanEncoder.encode(value.has(i));
-
-    }
-
-    return bitString;
-
-  }
 
   public static decode(value: string, numBits: number): Vector {
 
@@ -28,7 +14,7 @@ export class FixedVectorEncoder {
 
     const vector: Vector = new Vector();
 
-    for (let i = 1; i <= numBits; i ++) {
+    for (let i = 1; i <= numBits; i++) {
 
       if (BooleanEncoder.decode(value[i - 1])) {
 
