@@ -6,7 +6,6 @@ export class Base64Url {
    * Base 64 URL character set.  Different from standard Base64 char set
    * in that '+' and '/' are replaced with '-' and '_'.
    */
-  private static DICT = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
   private static REVERSE_DICT: Map<string, number> = new Map([
     ['A', 0], ['B', 1], ['C', 2], ['D', 3], ['E', 4], ['F', 5],
     ['G', 6], ['H', 7], ['I', 8], ['J', 9], ['K', 10], ['L', 11],
@@ -25,7 +24,6 @@ export class Base64Url {
    * log2(64) = 6
    */
   private static BASIS = 6;
-  private static LCM = 24;
 
   /**
    * decodes a base64url encoded bitfield string

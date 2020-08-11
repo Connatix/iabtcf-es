@@ -9,7 +9,7 @@ export class Json {
       const onLoad: (evt: Event) => void = (): void => {
 
         // is the response done
-        if (req.readyState == XMLHttpRequest.DONE ) {
+        if (req.readyState == XMLHttpRequest.DONE) {
 
           /**
            * For our purposes if it's not a 200 range response, then it's a
@@ -25,7 +25,7 @@ export class Json {
 
                 response = JSON.parse(response);
 
-              } catch (e) {}
+              } catch (e) { }
 
             }
 
@@ -87,19 +87,6 @@ export class Json {
 
   }
 
-  /**
-   * @static
-   * @param {string} url - full path to POST to
-   * @param {object} body - JSON object to post
-   * @param {boolean} sendCookies - Whether or not to send the XMLHttpRequest with credentials or not
-   * @param {number} [timeout] - optional timeout in milliseconds
-   * @return {Promise<object>} - if the server responds the response will be returned here
-   */
-  public static post(url: string, body: object, sendCookies = false, timeout = 0): Promise<object> {
-
-    return this.absCall(url, JSON.stringify(body), sendCookies, timeout);
-
-  }
   /**
    * @static
    * @param {string} url - full path to the json

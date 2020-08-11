@@ -21,7 +21,6 @@ export declare class BitLength {
     static readonly anyBoolean: number;
     static readonly encodingType: number;
     static readonly maxId: number;
-    static readonly numCustomPurposes: number;
     static readonly numEntries: number;
     static readonly numRestrictions: number;
     static readonly purposeId: number;

@@ -1,4 +1,4 @@
-import {Fields} from '../model';
+import { Fields } from '../model';
 export class BitLength {
 
   public static readonly [Fields.cmpId]: number = 12;
@@ -23,7 +23,6 @@ export class BitLength {
   public static readonly anyBoolean: number = 1;
   public static readonly encodingType: number = 1;
   public static readonly maxId: number = 16;
-  public static readonly numCustomPurposes: number = 6;
   public static readonly numEntries: number = 12;
   public static readonly numRestrictions: number = 12;
   public static readonly purposeId: number = 6;

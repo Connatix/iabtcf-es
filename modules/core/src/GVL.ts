@@ -1,12 +1,10 @@
-import {Cloneable} from './Cloneable';
-import {GVLError} from './errors';
-import {Json} from './Json';
-import {ConsentLanguages, IntMap} from './model';
-import {ByPurposeVendorMap, Declarations, Feature, IDSetMap, Purpose, Stack, Vendor, VendorList} from './model/gvl';
+import { Cloneable } from './Cloneable';
+import { GVLError } from './errors';
+import { Json } from './Json';
+import { ConsentLanguages, IntMap } from './model';
+import { ByPurposeVendorMap, Declarations, Feature, IDSetMap, Purpose, Stack, Vendor, VendorList } from './model/gvl';
 
 export type VersionOrVendorList = string | number | VendorList;
-type PurposeOrFeature = 'purpose' | 'feature';
-type PurposeSubType = 'consent' | 'legInt' | 'flexible';
 
 /**
  * class with utilities for managing the global vendor list.  Will use JSON to
@@ -107,23 +105,6 @@ export class GVL extends Cloneable<GVL> implements VendorList {
    * ```
    */
   public static versionedFilename = 'archives/vendor-list-v[VERSION].json';
-
-  /**
-   * @param {string} - Translations of the names and descriptions for Purposes,
-   * Special Purposes, Features, and Special Features to non-English languages
-   * are contained in a file where attributes containing English content
-   * (except vendor declaration information) are translated.  The iab publishes
-   * one following the scheme below where the LANG is the iso639-1 language
-   * code.  For a list of available translations
-   * [please go here](https://register.consensu.org/Translation).
-   *
-   * eg.
-   * ```javascript
-   * GVL.baseUrl = "http://www.mydomain.com/iabcmp/";
-   * GVL.languageFilename = "purposes?getPurposes=[LANG]";
-   * ```
-   */
-  public static languageFilename = 'purposes-[LANG].json';
 
   /**
    * @param {Promise} resolved when this GVL object is populated with the data
@@ -300,61 +281,6 @@ export class GVL extends Cloneable<GVL> implements VendorList {
 
   }
 
-  /**
-   * emptyLanguageCache
-   *
-   * @param {string} [lang] - Optional ISO 639-1 langauge code to remove from
-   * the cache.  Should be one of the languages in GVL.consentLanguages set.
-   * If not then the whole cache will be deleted.
-   * @return {boolean} - true if anything was deleted from the cache
-   */
-  public static emptyLanguageCache(lang?: string): boolean {
-
-    let retr = false;
-
-    if (lang === undefined && GVL.LANGUAGE_CACHE.size > 0) {
-
-      GVL.LANGUAGE_CACHE = new Map<string, Declarations>();
-      retr = true;
-
-    } else if (typeof lang === 'string' && this.consentLanguages.has(lang.toUpperCase())) {
-
-      GVL.LANGUAGE_CACHE.delete(lang.toUpperCase());
-      retr = true;
-
-    }
-
-    return retr;
-
-  }
-
-  /**
-   * emptyCache
-   *
-   * @param {number} [vendorListVersion] - version of the vendor list to delete
-   * from the cache.  If none is specified then the whole cache is deleted.
-   * @return {boolean} - true if anything was deleted from the cache
-   */
-  public static emptyCache(vendorListVersion?: number): boolean {
-
-    let retr = false;
-
-    if (Number.isInteger(vendorListVersion) && vendorListVersion >= 0) {
-
-      GVL.CACHE.delete(vendorListVersion);
-      retr = true;
-
-    } else if (vendorListVersion === undefined) {
-
-      GVL.CACHE = new Map<number, VendorList>();
-      retr = true;
-
-    }
-
-    return retr;
-
-  }
-
   private cacheLanguage(): void {
 
     if (!GVL.LANGUAGE_CACHE.has(this.lang_)) {
@@ -406,67 +332,6 @@ export class GVL extends Cloneable<GVL> implements VendorList {
       stacks: this.stacks,
       vendors: this.fullVendorList,
     }));
-
-  }
-
-  /**
-   * changeLanguage - retrieves the purpose language translation and sets the
-   * internal language variable
-   *
-   * @param {string} lang - ISO 639-1 langauge code to change language to
-   * @return {Promise<void | GVLError>} - returns the `readyPromise` and
-   * resolves when this GVL is populated with the data from the language file.
-   */
-  public async changeLanguage(lang: string): Promise<void | GVLError> {
-
-    const langUpper = lang.toUpperCase();
-
-    if (GVL.consentLanguages.has(langUpper)) {
-
-      if (langUpper !== this.lang_) {
-
-        this.lang_ = langUpper;
-
-        if (GVL.LANGUAGE_CACHE.has(langUpper)) {
-
-          const cached: Declarations = GVL.LANGUAGE_CACHE.get(langUpper) as Declarations;
-
-          for (const prop in cached) {
-
-            if (cached.hasOwnProperty(prop)) {
-
-              this[prop] = cached[prop];
-
-            }
-
-          }
-
-        } else {
-
-          // load Language specified
-          const url = GVL.baseUrl + GVL.languageFilename.replace('[LANG]', lang);
-
-          try {
-
-            await this.fetchJson(url);
-
-            this.cacheLanguage();
-
-          } catch (err) {
-
-            throw new GVLError('unable to load language: ' + err.message);
-
-          }
-
-        }
-
-      }
-
-    } else {
-
-      throw new GVLError(`unsupported language ${lang}`);
-
-    }
 
   }
 
@@ -591,7 +456,7 @@ export class GVL extends Cloneable<GVL> implements VendorList {
     // assigns vendor ids to their respective maps
     this.vendors_ = vendorIds.reduce((vendors: {}, vendorId: number): {} => {
 
-      const vendor: Vendor = this.vendors_[''+vendorId];
+      const vendor: Vendor = this.vendors_['' + vendorId];
 
       if (vendor && vendor.deletedDate === undefined) {
 
@@ -645,109 +510,6 @@ export class GVL extends Cloneable<GVL> implements VendorList {
       return vendors;
 
     }, {});
-
-  }
-
-  private getFilteredVendors(
-    purposeOrFeature: PurposeOrFeature,
-    id: number,
-    subType?: PurposeSubType,
-    special?: boolean,
-  ): IntMap<Vendor> {
-
-    const properPurposeOrFeature: string = purposeOrFeature.charAt(0).toUpperCase() + purposeOrFeature.slice(1);
-    let vendorSet: Set<number>;
-    const retr: IntMap<Vendor> = {};
-
-    if (purposeOrFeature === 'purpose' && subType) {
-
-      vendorSet = this['by' + properPurposeOrFeature + 'VendorMap'][id + ''][subType];
-
-    } else {
-
-      vendorSet = this['by' + (special ? 'Special' : '' ) + properPurposeOrFeature + 'VendorMap'][id + ''];
-
-    }
-
-    vendorSet.forEach((vendorId: number): void => {
-
-      retr[vendorId + ''] = this.vendors[vendorId + ''];
-
-    });
-
-    return retr;
-
-  }
-
-  /**
-   * getVendorsWithConsentPurpose
-   *
-   * @param {number} purposeId
-   * @return {IntMap<Vendor>} - list of vendors that have declared the consent purpose id
-   */
-  public getVendorsWithConsentPurpose(purposeId: number): IntMap<Vendor> {
-
-    return this.getFilteredVendors('purpose', purposeId, 'consent');
-
-  }
-
-  /**
-   * getVendorsWithLegIntPurpose
-   *
-   * @param {number} purposeId
-   * @return {IntMap<Vendor>} - list of vendors that have declared the legInt (Legitimate Interest) purpose id
-   */
-  public getVendorsWithLegIntPurpose(purposeId: number): IntMap<Vendor> {
-
-    return this.getFilteredVendors('purpose', purposeId, 'legInt');
-
-  }
-
-  /**
-   * getVendorsWithFlexiblePurpose
-   *
-   * @param {number} purposeId
-   * @return {IntMap<Vendor>} - list of vendors that have declared the flexible purpose id
-   */
-  public getVendorsWithFlexiblePurpose(purposeId: number): IntMap<Vendor> {
-
-    return this.getFilteredVendors('purpose', purposeId, 'flexible');
-
-  }
-
-  /**
-   * getVendorsWithSpecialPurpose
-   *
-   * @param {number} specialPurposeId
-   * @return {IntMap<Vendor>} - list of vendors that have declared the special purpose id
-   */
-  public getVendorsWithSpecialPurpose(specialPurposeId: number): IntMap<Vendor> {
-
-    return this.getFilteredVendors('purpose', specialPurposeId, undefined, true);
-
-  }
-
-  /**
-   * getVendorsWithFeature
-   *
-   * @param {number} featureId
-   * @return {IntMap<Vendor>} - list of vendors that have declared the feature id
-   */
-  public getVendorsWithFeature(featureId: number): IntMap<Vendor> {
-
-    return this.getFilteredVendors('feature', featureId);
-
-  }
-
-  /**
-   * getVendorsWithSpecialFeature
-   *
-   * @param {number} specialFeatureId
-   * @return {IntMap<Vendor>} - list of vendors that have declared the special feature id
-   */
-  public getVendorsWithSpecialFeature(specialFeatureId: number): IntMap<Vendor> {
-
-    return this.getFilteredVendors('feature', specialFeatureId, undefined, true);
 
   }
 

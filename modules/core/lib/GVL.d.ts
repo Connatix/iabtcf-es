@@ -72,22 +72,6 @@ export declare class GVL extends Cloneable<GVL> implements VendorList {
      */
     static versionedFilename: string;
     /**
-     * @param {string} - Translations of the names and descriptions for Purposes,
-     * Special Purposes, Features, and Special Features to non-English languages
-     * are contained in a file where attributes containing English content
-     * (except vendor declaration information) are translated.  The iab publishes
-     * one following the scheme below where the LANG is the iso639-1 language
-     * code.  For a list of available translations
-     * [please go here](https://register.consensu.org/Translation).
-     *
-     * eg.
-     * ```javascript
-     * GVL.baseUrl = "http://www.mydomain.com/iabcmp/";
-     * GVL.languageFilename = "purposes?getPurposes=[LANG]";
-     * ```
-     */
-    static languageFilename: string;
-    /**
      * @param {Promise} resolved when this GVL object is populated with the data
      * or rejected if there is an error.
      */
@@ -174,23 +158,6 @@ export declare class GVL extends Cloneable<GVL> implements VendorList {
      * will be loaded
      */
     constructor(versionOrVendorList?: VersionOrVendorList);
-    /**
-     * emptyLanguageCache
-     *
-     * @param {string} [lang] - Optional ISO 639-1 langauge code to remove from
-     * the cache.  Should be one of the languages in GVL.consentLanguages set.
-     * If not then the whole cache will be deleted.
-     * @return {boolean} - true if anything was deleted from the cache
-     */
-    static emptyLanguageCache(lang?: string): boolean;
-    /**
-     * emptyCache
-     *
-     * @param {number} [vendorListVersion] - version of the vendor list to delete
-     * from the cache.  If none is specified then the whole cache is deleted.
-     * @return {boolean} - true if anything was deleted from the cache
-     */
-    static emptyCache(vendorListVersion?: number): boolean;
     private cacheLanguage;
     private fetchJson;
     /**
@@ -201,62 +168,10 @@ export declare class GVL extends Cloneable<GVL> implements VendorList {
      * functionality and methods of this class.
      */
     getJson(): VendorList;
-    /**
-     * changeLanguage - retrieves the purpose language translation and sets the
-     * internal language variable
-     *
-     * @param {string} lang - ISO 639-1 langauge code to change language to
-     * @return {Promise<void | GVLError>} - returns the `readyPromise` and
-     * resolves when this GVL is populated with the data from the language file.
-     */
-    changeLanguage(lang: string): Promise<void | GVLError>;
     get language(): string;
     private isVendorList;
     private populate;
     private mapVendors;
-    private getFilteredVendors;
-    /**
-     * getVendorsWithConsentPurpose
-     *
-     * @param {number} purposeId
-     * @return {IntMap<Vendor>} - list of vendors that have declared the consent purpose id
-     */
-    getVendorsWithConsentPurpose(purposeId: number): IntMap<Vendor>;
-    /**
-     * getVendorsWithLegIntPurpose
-     *
-     * @param {number} purposeId
-     * @return {IntMap<Vendor>} - list of vendors that have declared the legInt (Legitimate Interest) purpose id
-     */
-    getVendorsWithLegIntPurpose(purposeId: number): IntMap<Vendor>;
-    /**
-     * getVendorsWithFlexiblePurpose
-     *
-     * @param {number} purposeId
-     * @return {IntMap<Vendor>} - list of vendors that have declared the flexible purpose id
-     */
-    getVendorsWithFlexiblePurpose(purposeId: number): IntMap<Vendor>;
-    /**
-     * getVendorsWithSpecialPurpose
-     *
-     * @param {number} specialPurposeId
-     * @return {IntMap<Vendor>} - list of vendors that have declared the special purpose id
-     */
-    getVendorsWithSpecialPurpose(specialPurposeId: number): IntMap<Vendor>;
-    /**
-     * getVendorsWithFeature
-     *
-     * @param {number} featureId
-     * @return {IntMap<Vendor>} - list of vendors that have declared the feature id
-     */
-    getVendorsWithFeature(featureId: number): IntMap<Vendor>;
-    /**
-     * getVendorsWithSpecialFeature
-     *
-     * @param {number} specialFeatureId
-     * @return {IntMap<Vendor>} - list of vendors that have declared the special feature id
-     */
-    getVendorsWithSpecialFeature(specialFeatureId: number): IntMap<Vendor>;
     /**
      * vendors
      *
