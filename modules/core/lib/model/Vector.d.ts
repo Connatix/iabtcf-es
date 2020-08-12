@@ -63,6 +63,5 @@ declare class Vector extends Cloneable<Vector> implements Iterable<IdBoolTuple> 
      */
     forEach(callback: (value: boolean, id: number) => void): void;
     get size(): number;
-    setAll<T>(intMap: IntMap<T>): void;
 }
 export { Vector };

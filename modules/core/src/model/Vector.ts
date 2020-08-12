@@ -1,6 +1,6 @@
-import {Cloneable} from '../Cloneable';
-import {TCModelError} from '../errors';
-import {IntMap} from './IntMap';
+import { Cloneable } from '../Cloneable';
+import { TCModelError } from '../errors';
+import { IntMap } from './IntMap';
 
 type SingleIDOrCollection = number | number[] | IntMap<unknown> | Set<number | string>;
 export type IdBoolTuple = [number, boolean];
@@ -21,7 +21,7 @@ class Vector extends Cloneable<Vector> implements Iterable<IdBoolTuple> {
    */
   private set_: Set<number> = new Set<number>();
 
-  public* [Symbol.iterator](): Iterator<IdBoolTuple> {
+  public *[Symbol.iterator](): Iterator<IdBoolTuple> {
 
     for (let i = 1; i <= this.maxId; i++) {
 
@@ -105,7 +105,7 @@ class Vector extends Cloneable<Vector> implements Iterable<IdBoolTuple> {
     let result = (typeof item === 'object');
     result = (result && Object.keys(item).every((key: string): boolean => {
 
-      let itemResult =Number.isInteger(parseInt(key, 10));
+      let itemResult = Number.isInteger(parseInt(key, 10));
 
       itemResult = (itemResult && this.isValidNumber(item[key].id));
       itemResult = (itemResult && item[key].name !== undefined);
@@ -218,11 +218,5 @@ class Vector extends Cloneable<Vector> implements Iterable<IdBoolTuple> {
 
   }
 
-  public setAll<T>(intMap: IntMap<T>): void {
-
-    this.set(intMap);
-
-  }
-
 }
-export {Vector};
+export { Vector };

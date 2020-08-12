@@ -1,5 +1,4 @@
 import { PurposeRestriction } from './PurposeRestriction';
-import { RestrictionType } from './RestrictionType';
 import { GVL } from '../GVL';
 import { Cloneable } from '../Cloneable';
 export declare class PurposeRestrictionVector extends Cloneable<PurposeRestrictionVector> {
@@ -26,37 +25,7 @@ export declare class PurposeRestrictionVector extends Cloneable<PurposeRestricti
      * @return {void}
      */
     add(vendorId: number, purposeRestriction: PurposeRestriction): void;
-    /**
-     * getVendors - returns array of vendor ids optionally narrowed by a given
-     * Purpose Restriction.  If no purpose restriction is passed then all vendor
-     * ids will be returned.  One can expect this result to be a unique set of
-     * ids no duplicates.
-     *
-     * @param {PurposeRestriction} [purposeRestriction] - optionally passed to
-     * get only Vendor IDs restricted under the given Purpose Restriction
-     * @return {number[]} - Unique ID set of vendors
-     */
-    getVendors(purposeRestriction?: PurposeRestriction): number[];
-    getRestrictionType(vendorId: number, purposeId: number): RestrictionType | undefined;
-    /**
-     * vendorHasRestriction - determines whether a given Vendor ID is under a
-     * given Purpose Restriction
-     *
-     * @param {number} vendorId
-     * @param {PurposeRestriction} purposeRestriction
-     * @return {boolean} - true if the give Vendor ID is under the given Purpose
-     * Restriction
-     */
-    vendorHasRestriction(vendorId: number, purposeRestriction: PurposeRestriction): boolean;
-    /**
-     * getMaxVendorId - gets the Maximum Vendor ID regardless of Purpose
-     * Restriction
-     *
-     * @return {number} - maximum Vendor ID
-     */
-    getMaxVendorId(): number;
     getRestrictions(vendorId?: number): PurposeRestriction[];
-    getPurposes(): number[];
     /**
      * remove - removes Vendor ID from a Purpose Restriction
      *
@@ -84,10 +53,4 @@ export declare class PurposeRestrictionVector extends Cloneable<PurposeRestricti
      * @return {boolean}
      */
     isEmpty(): boolean;
-    /**
-     * numRestrictions - returns the number of Purpose Restrictions.
-     *
-     * @return {number}
-     */
-    get numRestrictions(): number;
 }
